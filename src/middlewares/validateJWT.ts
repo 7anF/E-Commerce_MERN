@@ -1,10 +1,7 @@
 import { NextFunction, Request, Response} from "express";
 import jwt from "jsonwebtoken";
 import userModel from "../models/userModel";
-
-export interface ExtendedRequest extends Request {
-    user?: any;
-};
+import { ExtendedRequest } from "../types/extendedRequest";
 
 const validateJWT = (req: ExtendedRequest, res: Response, next: NextFunction) => {
     const authoraizationHeader = req.get('authorization');
