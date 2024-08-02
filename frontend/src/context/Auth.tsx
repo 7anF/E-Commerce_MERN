@@ -5,13 +5,15 @@ interface IAuthContextType {
     token: string | null;
     login: (username: string, token: string) => void;
     isAuthenticated: boolean;
+    logout: () => void
 };
 
 export const AuthContext = createContext<IAuthContextType>({
     username: null,
     token: null,
     login: () => {},
-    isAuthenticated: false
+    isAuthenticated: false,
+    logout: () => {}
 });
 
 export const useAuth = () => useContext(AuthContext);
