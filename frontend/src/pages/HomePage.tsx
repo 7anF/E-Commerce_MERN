@@ -34,7 +34,10 @@ const HomePage = () => {
         }}>
             <Grid container spacing={2} justifyContent= 'center'>
                 {product.map((p) => (
-                    <Grid item>
+                    <Grid 
+                        item 
+                        key={p._id}
+                    >
                         <ProductCard
                             {...p}
                         />
