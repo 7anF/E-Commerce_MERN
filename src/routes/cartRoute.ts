@@ -1,5 +1,5 @@
 import express from 'express';
-import { addItemRoCart, clearCart, deleteItemInCart, getActiveCartForUser, upadteItemInCart } from '../services/cartService';
+import { addItemRoCart, checkout, clearCart, deleteItemInCart, getActiveCartForUser, upadteItemInCart } from '../services/cartService';
 import validateJWT from '../middlewares/validateJWT';
 import { ExtendedRequest } from '../types/extendedRequest';
 
@@ -38,6 +38,13 @@ router.delete('/items/:productId', validateJWT, async (req: ExtendedRequest, res
 router.delete('/', validateJWT, async (req: ExtendedRequest, res) => {
     const userId = req.user._id;
     const response = await clearCart({ userId });
+    res.status(response.statusCode).send(response.data);
+});
+
+router.post('/checkout', validateJWT, async (req: ExtendedRequest, res) => {
+    const userId = req.user._id;
+    const { address } = req.body;
+    const response = await checkout({ userId, address });
     res.status(response.statusCode).send(response.data);
 });
 
