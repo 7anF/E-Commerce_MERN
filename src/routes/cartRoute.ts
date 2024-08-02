@@ -1,11 +1,11 @@
 import express from 'express';
-import { addItemRoCart, getActiveCartForUser, upadteItemInCart } from '../services/cartService';
+import { addItemRoCart, clearCart, deleteItemInCart, getActiveCartForUser, upadteItemInCart } from '../services/cartService';
 import validateJWT from '../middlewares/validateJWT';
 import { ExtendedRequest } from '../types/extendedRequest';
 
-const rotuer = express.Router();
+const router = express.Router();
 
-rotuer.get(
+router.get(
     '/', 
     validateJWT, 
     async (req: ExtendedRequest, res) => {
@@ -14,18 +14,33 @@ rotuer.get(
     res.status(200).send(cart);
 });
 
-rotuer.post('/items', validateJWT, async (req: ExtendedRequest, res) => {
+router.post('/items', validateJWT, async (req: ExtendedRequest, res) => {
     const userId = req.user._id;
     const { productId, quantity } = req.body;
     const response = await addItemRoCart({ userId, productId, quantity });
     res.status(response.statusCode).send(response.data);
 });
 
-rotuer.put('/items', validateJWT, async (req: ExtendedRequest, res) => {
+router.put('/items', validateJWT, async (req: ExtendedRequest, res) => {
     const userId = req.user._id;
     const { productId, quantity } = req.body;
     const response = await upadteItemInCart({ userId, productId, quantity });
     res.status(response.statusCode).send(response.data);
-})
+});
 
-export default rotuer;
+router.delete('/items/:productId', validateJWT, async (req: ExtendedRequest, res) => {
+    const userId = req.user._id;
+    const { productId } = req.params;
+    const response = await deleteItemInCart({ userId, productId });
+    res.status(response.statusCode).send(response.data);
+});
+
+router.delete('/', validateJWT, async (req: ExtendedRequest, res) => {
+    const userId = req.user._id;
+    const response = await clearCart({ userId });
+    res.status(response.statusCode).send(response.data);
+});
+
+
+
+export default router;
