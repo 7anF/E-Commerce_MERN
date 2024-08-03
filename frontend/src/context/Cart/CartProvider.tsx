@@ -25,16 +25,25 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
       const cart = await response.json();
 
       const cartItemsMapped = cart.items.map(
-        ({ product, qunatity }: { product: any; qunatity: number }) => ({
+        ({
+          product,
+          quantity,
+          unitPrice,
+        }: {
+          product: any;
+          quantity: number;
+          unitPrice: number;
+        }) => ({
           productId: product._id,
           title: product.title,
           image: product.image,
-          qunatity,
-          unitPrice: product.unitPrice,
+          quantity,
+          unitPrice,
         })
       );
 
       setCartItems(cartItemsMapped);
+      setTotalAmount(cart.totalAmount);
     };
 
     fetchCart();
@@ -61,11 +70,11 @@ const CartProvider: FC<PropsWithChildren> = ({ children }) => {
       if (!cart) setError("Failed to parse cart");
 
       const cartItemsMapped = cart.items.map(
-        ({ product, qunatity }: { product: any; qunatity: number }) => ({
+        ({ product, quantity }: { product: any; quantity: number }) => ({
           productId: product._id,
           title: product.title,
           image: product.image,
-          qunatity,
+          quantity,
           unitPrice: product.unitPrice,
         })
       );
