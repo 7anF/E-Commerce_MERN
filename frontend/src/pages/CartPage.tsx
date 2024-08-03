@@ -2,6 +2,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useCart } from "../context/Cart/Cart";
 import { Box, Button, ButtonGroup } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
   const {
@@ -12,6 +13,8 @@ const CartPage = () => {
     clearCart,
   } = useCart();
 
+  const navigate = useNavigate();
+
   const handleQuantity = (productId: string, quantity: number) => {
     if (quantity <= 0) return;
 
@@ -20,6 +23,10 @@ const CartPage = () => {
 
   const handleRemoveItem = (productId: string) => {
     removeItemInCart(productId);
+  };
+
+  const handleCheckout = () => {
+    navigate("/checkout");
   };
 
   return (
@@ -94,10 +101,18 @@ const CartPage = () => {
               </Box>
             </Box>
           ))}
-          <Box>
+          <Box
+            display="flex"
+            flexDirection="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
             <Typography variant="h4" mb={4}>
               Total Amount: {totalAmount} JOD
             </Typography>
+            <Button onClick={handleCheckout} variant="contained">
+              Go To Checkout
+            </Button>
           </Box>
         </Box>
       ) : (
