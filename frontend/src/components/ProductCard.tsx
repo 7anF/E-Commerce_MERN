@@ -5,8 +5,11 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { IProduct } from '../types/Product';
+import { useCart } from '../context/Cart/Cart';
 
 export default function ProductCard({ _id, title, image, price }: IProduct) {
+  const { addItemToCart } = useCart();
+
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -23,7 +26,9 @@ export default function ProductCard({ _id, title, image, price }: IProduct) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" variant='contained'>Add to cart</Button>
+        <Button size="small" variant='contained' onClick={() => addItemToCart(_id)}>
+          Add to cart
+        </Button>
       </CardActions>
     </Card>
   );

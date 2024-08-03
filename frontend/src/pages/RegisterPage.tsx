@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useRef, useState } from "react";
 import { BASE_URL } from "../constant/Baseurl";
-import { useAuth } from "../context/Auth";
+import { useAuth } from "../context/Auth/Auth";
 import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
