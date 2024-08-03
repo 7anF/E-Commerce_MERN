@@ -4,8 +4,13 @@ import { useCart } from "../context/Cart/Cart";
 import { Box, Button, ButtonGroup } from "@mui/material";
 
 const CartPage = () => {
-  const { cartItems, totalAmount, updateItemInCart, removeItemInCart } =
-    useCart();
+  const {
+    cartItems,
+    totalAmount,
+    updateItemInCart,
+    removeItemInCart,
+    clearCart,
+  } = useCart();
 
   const handleQuantity = (productId: string, quantity: number) => {
     if (quantity <= 0) return;
@@ -19,70 +24,89 @@ const CartPage = () => {
 
   return (
     <Container fixed sx={{ mt: 2 }}>
-      <Typography variant="h4">My Cart</Typography>
-      <Box display="flex" flexDirection="column" gap={4} mt={4}>
-        {cartItems.map((item, index) => (
-          <Box
-            key={index}
-            display="flex"
-            flexDirection="row"
-            justifyContent="space-between"
-            alignItems="center"
-            sx={{
-              border: 1,
-              borderColor: "#e3e3e3",
-              borderRadius: 5,
-            }}
-            p={2}
-          >
+      <Box
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Typography variant="h4">My Cart</Typography>
+        <Button onClick={() => clearCart()}>Clear the cart</Button>
+      </Box>
+      {cartItems.length ? (
+        <Box display="flex" flexDirection="column" gap={4} mt={4}>
+          {cartItems.map((item, index) => (
             <Box
+              key={index}
               display="flex"
               flexDirection="row"
-              justifyContent="center"
-              gap={2}
+              justifyContent="space-between"
+              alignItems="center"
+              sx={{
+                border: 1,
+                borderColor: "#e3e3e3",
+                borderRadius: 5,
+              }}
+              p={2}
             >
-              <img src={item.image} alt={item.title} width={50} />
               <Box
                 display="flex"
-                flexDirection="column"
+                flexDirection="row"
                 justifyContent="center"
-                alignItems="center"
+                gap={2}
               >
-                <Typography variant="h6">{item.title}</Typography>
-                <Typography>
-                  {item.quantity} x {item.unitPrice} JOD
-                </Typography>
-                <Button onClick={() => handleRemoveItem(item.productId)}>
-                  Remove item
-                </Button>
+                <img src={item.image} alt={item.title} width={50} />
+                <Box
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="center"
+                  alignItems="center"
+                >
+                  <Typography variant="h6">{item.title}</Typography>
+                  <Typography>
+                    {item.quantity} x {item.unitPrice} JOD
+                  </Typography>
+                  <Button onClick={() => handleRemoveItem(item.productId)}>
+                    Remove item
+                  </Button>
+                </Box>
+              </Box>
+              <Box>
+                <ButtonGroup
+                  variant="contained"
+                  aria-label="Basic button group"
+                >
+                  <Button
+                    onClick={() =>
+                      handleQuantity(item.productId, item.quantity - 1)
+                    }
+                  >
+                    -
+                  </Button>
+                  <Button
+                    onClick={() =>
+                      handleQuantity(item.productId, item.quantity + 1)
+                    }
+                  >
+                    +
+                  </Button>
+                </ButtonGroup>
               </Box>
             </Box>
-            <Box>
-              <ButtonGroup variant="contained" aria-label="Basic button group">
-                <Button
-                  onClick={() =>
-                    handleQuantity(item.productId, item.quantity - 1)
-                  }
-                >
-                  -
-                </Button>
-                <Button
-                  onClick={() =>
-                    handleQuantity(item.productId, item.quantity + 1)
-                  }
-                >
-                  +
-                </Button>
-              </ButtonGroup>
-            </Box>
+          ))}
+          <Box>
+            <Typography variant="h4" mb={4}>
+              Total Amount: {totalAmount} JOD
+            </Typography>
           </Box>
-        ))}
-        <Box>
-          <Typography variant="h4" mb={4}>
-            Total Amount: {totalAmount} JOD
+        </Box>
+      ) : (
+        <Box display="flex" alignItems="center" justifyContent="center">
+          <Typography variant="h2" color="gray">
+            Cart is empty
           </Typography>
         </Box>
-      </Box>
+      )}
     </Container>
   );
 };
