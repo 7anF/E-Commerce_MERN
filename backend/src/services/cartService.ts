@@ -156,9 +156,12 @@ export const deleteItemInCart = async ({
   cart.items = OtherCartItems;
   cart.totalAmount = total;
 
-  const updatedCart = await cart.save();
+  await cart.save();
 
-  return { data: updatedCart, statusCode: 200 };
+  return {
+    data: await getActiveCartForUser({ userId, ispopulated: true }),
+    statusCode: 200,
+  };
 };
 
 interface IClearCart {
